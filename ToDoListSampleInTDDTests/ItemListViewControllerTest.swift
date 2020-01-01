@@ -38,6 +38,60 @@ class ItemListViewControllerTest: XCTestCase {
 
         XCTAssertTrue(sut.tableView.delegate is MockDataSource)
     }
+    
+    func test_InitialVC_HasAddBarButtonWithSelfAsTarger(){
+        sut.loadViewIfNeeded()
+        let target = sut.navigationItem.rightBarButtonItem?.target
+        XCTAssertEqual(target as? UIViewController, sut)
+    }
+    
+    func test_AddItem_Presents_AddItemViewController() {
+        sut = ItemListViewController()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+          window.makeKeyAndVisible()
+          window.rootViewController = sut
+        
+        _ = sut.view
+                
+        guard let addButton = sut.navigationItem.rightBarButtonItem else {
+            XCTFail()
+            return
+        }
+        
+        guard let action = addButton.action else {
+            XCTFail()
+            return
+        }
+        sut.performSelector(onMainThread: action, with: addButton, waitUntilDone: true)
+        
+      
+        XCTAssertNotNil(sut.presentedViewController)
+        XCTAssertTrue(sut.presentedViewController is ToDoInputViewController)
+    }
+    
+    func test_AddItem_PresentsAddItemViewController(){
+        sut = ItemListViewController()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+          window.makeKeyAndVisible()
+          window.rootViewController = sut
+        
+        _ = sut.view
+        guard let addButton = sut.navigationItem.rightBarButtonItem else {
+            XCTFail()
+            return
+        }
+        
+        guard let action = addButton.action else {
+            XCTFail()
+            return
+        }
+        sut.performSelector(onMainThread: action, with: addButton, waitUntilDone: true)
+
+        
+        let vc = sut.presentedViewController as! ToDoInputViewController
+        
+        XCTAssertNotNil(vc)
+    }
 
 }
 

@@ -15,9 +15,8 @@ class ItemListViewController : UIViewController {
     convenience init(dataProvider:ComposedSources) {
         self.init()
         self.dataProvider = dataProvider
-        
-      
     }
+   
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -39,6 +38,12 @@ class ItemListViewController : UIViewController {
         tableView.dataSource = dataProvider
         tableView.delegate = dataProvider
         
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.navigationItem.rightBarButtonItem =  UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+        view.backgroundColor = .white
         setupView()
     }
     
@@ -52,4 +57,10 @@ class ItemListViewController : UIViewController {
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor)
     ])
 }
+    @objc func addButtonTapped() {
+        let vc = ToDoInputViewController()
+        
+        self.present(vc, animated: true)
+        
+    }
 }

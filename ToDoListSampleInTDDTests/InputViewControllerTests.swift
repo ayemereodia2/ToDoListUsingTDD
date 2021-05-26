@@ -49,4 +49,10 @@ class InputViewControllerTests : XCTestCase {
         XCTAssertTrue(textFieldIsSubView)
     }
     
+    func test_HasCancelButtonLive() {
+        let textFieldIsSubView = sut.cancelButton.isDescendant(of:sut.view)
+        
+        XCTAssertTrue(textFieldIsSubView)
+    }
+    
 }

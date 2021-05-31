@@ -10,7 +10,40 @@ import CoreLocation
 
 struct Location: Equatable {
   let name: String
-  let coordinate: CLLocationCoordinate2D?
+    var coordinate: CLLocationCoordinate2D?
+    
+    var plistDict:[String:Any] {
+        var dict = [String:Any]()
+        dict[nameKey] = name
+        
+        if let coordinate = coordinate {
+            dict[latitudeKey] = coordinate.latitude
+            dict[longitudeKey] = coordinate.longitude
+        }
+        return dict
+        
+    }
+    
+    init?(dict:[String:Any]){
+        guard let name = dict[nameKey] as? String else {
+            return nil
+        }
+        
+        let coordinates:CLLocationCoordinate2D?
+        
+        if let latitude = dict[latitudeKey] as? Double, let longitude = dict[longitudeKey] as? Double {
+            coordinates = CLLocationCoordinate2DMake(latitude,longitude)
+        }else{
+            coordinates = nil
+        }
+        self.name = name
+        self.coordinate = coordinates
+        
+    }
+    private let nameKey = "nameKey"
+    private let latitudeKey = "latitudeKey"
+    private let longitudeKey = "longitudeKey"
+    
     
   init(name: String,
        coordinate: CLLocationCoordinate2D? = nil) {
@@ -18,6 +51,7 @@ struct Location: Equatable {
     self.coordinate = coordinate 
     
   }
+    
 }
 
 

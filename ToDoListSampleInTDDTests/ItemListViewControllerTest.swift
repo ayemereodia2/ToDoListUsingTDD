@@ -92,11 +92,117 @@ class ItemListViewControllerTest: XCTestCase {
         
         XCTAssertNotNil(vc)
     }
+    
+    func test_ItemVC_SharesSameItemManager_WithToDoInputVC(){
+        sut = ItemListViewController()
+        let window = UIWindow(frame: UIScreen.main.bounds)
+          window.makeKeyAndVisible()
+          window.rootViewController = sut
+        guard let addButton = sut.navigationItem.rightBarButtonItem else {
+            XCTFail()
+            return
+        }
+        guard let action = addButton.action else {
+            XCTFail()
+            return
+        }
+        
+        sut.performSelector(onMainThread: action, with: addButton, waitUntilDone: true)
+        
+        guard let inputViewController = sut.presentedViewController as? ToDoInputViewController else {
+            XCTFail()
+            return
+        }
+        guard let itemManger = inputViewController.itemManager else {
+            XCTFail()
+            return
+        }
+        XCTAssertTrue(sut.itemManager === itemManger)
+    }
+    
+    func test_ViewDidLoad_SetsItemManagerToDataProvided(){
+        sut = ItemListViewController(dataProvider: ItemListDataSource())
+        let window = UIWindow(frame: UIScreen.main.bounds)
+          window.makeKeyAndVisible()
+          window.rootViewController = sut
+        
+        XCTAssertTrue(sut.itemManager === sut.dataProvider.itemManager)
+    }
+    
+    func test_IfTableReload_IsCalled() {
+        let mocktableView = MockTabelView()
+
+        sut = ItemListViewController(dataProvider: ItemListDataSource())
+        sut.tableView = mocktableView
+        
+        let window = UIWindow(frame: UIScreen.main.bounds)
+          window.makeKeyAndVisible()
+          window.rootViewController = sut
+        guard let addButton = sut.navigationItem.rightBarButtonItem else {
+            XCTFail()
+            return
+        }
+        guard let action = addButton.action else {
+            XCTFail()
+            return
+        }
+        
+        sut.performSelector(onMainThread: action, with: addButton, waitUntilDone: true)
+        
+        guard let inputViewController = sut.presentedViewController as? ToDoInputViewController else {
+            XCTFail()
+            return
+        }
+                
+        inputViewController.titleTextField.text = "title two"
+        inputViewController.saveButton.sendActions(for: .touchUpInside)
+        
+        sut.endAppearanceTransition()
+        
+        XCTAssertTrue(mocktableView.isReloadTableCalled)
+        
+    }
+    
+    func test_ItemSelectedNotifi_PushesDetailsVC(){
+        let mockNavVC = MockNavigationController(rootViewController: sut)
+        UIApplication.shared.keyWindow?.rootViewController = mockNavVC
+        sut.loadViewIfNeeded()
+        sut.itemManager.add(ToDoItem(title: "Foo"))
+        sut.itemManager.add(ToDoItem(title: "Bar"))
+        NotificationCenter.default.post(name:NSNotification.Name(rawValue: "ItemSelectedNotification"), object: self, userInfo: ["index":1])
+        
+        guard let detailsVC = mockNavVC.lastPushedViewController as? DetailViewController else {
+            return XCTFail()
+        }
+        
+        guard let detailItemManager = detailsVC.itemInfo?.0 else { return XCTFail() }
+        
+        guard let index = detailsVC.itemInfo?.1 else { return XCTFail() }
+        
+        detailsVC.loadViewIfNeeded()
+       
+        XCTAssertNotNil(detailsVC.titleLabel)
+        XCTAssertTrue(detailItemManager === sut.itemManager)
+        XCTAssertEqual(index, 1)
+        
+    }
 
 }
 
+extension ItemListViewControllerTest {
+    class MockNavigationController : UINavigationController {
+        var lastPushedViewController:UIViewController?
+        override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+            lastPushedViewController = viewController
+            super.pushViewController(viewController, animated: true)
+        }
+    }
+}
 
-class MockDataSource: NSObject, UITableViewDataSource,UITableViewDelegate {
+class MockDataSource: NSObject, UITableViewDataSource,UITableViewDelegate,ItemManagerSettable {
+    
+    var itemManager: ItemManager?
+    
     
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -108,4 +214,14 @@ class MockDataSource: NSObject, UITableViewDataSource,UITableViewDelegate {
     }
     
     
+}
+
+class MockTabelView : UITableView {
+    
+    var isReloadTableCalled:Bool = false
+
+    override func reloadData() {
+        
+        self.isReloadTableCalled = true
+    }
 }

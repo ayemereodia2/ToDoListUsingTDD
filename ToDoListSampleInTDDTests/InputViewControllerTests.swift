@@ -116,7 +116,23 @@ class InputViewControllerTests : XCTestCase {
         
         waitForExpectations(timeout:3, handler:nil)
  
-}
+    }
+    
+    func test_Save_DismissGot_Called(){
+        let mockVC = MockToDoInputVC()
+        mockVC.titleTextField = UITextField()
+        mockVC.addressTexfield = UITextField()
+        mockVC.dateTextField = UITextField()
+        mockVC.titleTextField.text = "title added"
+        mockVC.save()
+        
+        XCTAssertTrue(mockVC.dismissGotCalled)
+    }
+    
+    override func tearDown() {
+        sut.itemManager?.removeAll()
+        super.tearDown()
+    }
 }
 
 extension InputViewControllerTests {
@@ -138,6 +154,15 @@ extension InputViewControllerTests {
             
             return CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
         }
+    }
+    
+    class MockToDoInputVC : ToDoInputViewController {
+        var dismissGotCalled:Bool = false
+        
+        override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+            dismissGotCalled = true
+        }
+        
     }
     
 }

@@ -18,6 +18,9 @@
 		0470811C265945E9007E5DA0 /* DetailViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0470811B265945E9007E5DA0 /* DetailViewControllerTests.swift */; };
 		047081212659469B007E5DA0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047081202659469B007E5DA0 /* DetailViewController.swift */; };
 		047081222659469B007E5DA0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047081202659469B007E5DA0 /* DetailViewController.swift */; };
+		0495FEE826654744002041EF /* ToDoItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0495FEE726654744002041EF /* ToDoItemTests.swift */; };
+		0495FEED2665499C002041EF /* LocationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0495FEEC2665499C002041EF /* LocationTests.swift */; };
+		0495FEF226655479002041EF /* ItemManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0495FEF126655479002041EF /* ItemManagerTests.swift */; };
 		04B7C298265B20A700E81B01 /* InputViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B7C297265B20A700E81B01 /* InputViewControllerTests.swift */; };
 		04B7C29E265B213000E81B01 /* ToDoInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B7C29C265B213000E81B01 /* ToDoInputViewController.swift */; };
 		04EBE65926452E94007A2FDA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EBE65826452E94007A2FDA /* AppDelegate.swift */; };
@@ -67,6 +70,9 @@
 		047081162658F175007E5DA0 /* ItemCellTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellTest.swift; sourceTree = "<group>"; };
 		0470811B265945E9007E5DA0 /* DetailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewControllerTests.swift; sourceTree = "<group>"; };
 		047081202659469B007E5DA0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		0495FEE726654744002041EF /* ToDoItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemTests.swift; sourceTree = "<group>"; };
+		0495FEEC2665499C002041EF /* LocationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationTests.swift; sourceTree = "<group>"; };
+		0495FEF126655479002041EF /* ItemManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemManagerTests.swift; sourceTree = "<group>"; };
 		04B7C297265B20A700E81B01 /* InputViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputViewControllerTests.swift; sourceTree = "<group>"; };
 		04B7C29C265B213000E81B01 /* ToDoInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoInputViewController.swift; sourceTree = "<group>"; };
 		04EBE65526452E94007A2FDA /* ToDoListSampleInTDD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoListSampleInTDD.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -187,6 +193,9 @@
 				043503BE265ECF710034EE79 /* ControllerTest */,
 				043503C5265ED4890034EE79 /* APIClientTests.swift */,
 				044AD5DB2662546D002C6FF9 /* InitialViewControllerTests.swift */,
+				0495FEE726654744002041EF /* ToDoItemTests.swift */,
+				0495FEEC2665499C002041EF /* LocationTests.swift */,
+				0495FEF126655479002041EF /* ItemManagerTests.swift */,
 			);
 			path = ToDoListSampleInTDDTests;
 			sourceTree = "<group>";
@@ -358,10 +367,13 @@
 				04B7C298265B20A700E81B01 /* InputViewControllerTests.swift in Sources */,
 				043503CC265ED5000034EE79 /* APIClient.swift in Sources */,
 				043503C6265ED4890034EE79 /* APIClientTests.swift in Sources */,
+				0495FEE826654744002041EF /* ToDoItemTests.swift in Sources */,
+				0495FEF226655479002041EF /* ItemManagerTests.swift in Sources */,
 				04B7C29E265B213000E81B01 /* ToDoInputViewController.swift in Sources */,
 				044AD5DC2662546D002C6FF9 /* InitialViewControllerTests.swift in Sources */,
 				047081172658F175007E5DA0 /* ItemCellTest.swift in Sources */,
 				047081222659469B007E5DA0 /* DetailViewController.swift in Sources */,
+				0495FEED2665499C002041EF /* LocationTests.swift in Sources */,
 				04F4E99826455B7900DB1F71 /* ItemCell.swift in Sources */,
 				04EBE6BC26454844007A2FDA /* Location.swift in Sources */,
 				04EBE6B6264545FE007A2FDA /* ToDoItem.swift in Sources */,

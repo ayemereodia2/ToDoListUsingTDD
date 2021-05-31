@@ -13,8 +13,13 @@ import MapKit
 
 class DetailViewControllerTests : XCTestCase {
     
+    var sut:DetailViewController!
+    override func setUp() {
+        sut = DetailViewController()
+    }
+    
     func test_HasTitle_Label() {
-        let sut = DetailViewController()
+         sut = DetailViewController()
         sut.loadViewIfNeeded()
         let titleLabelIsSubView = sut.titleLabel.isDescendant(of: sut.view) 
         
@@ -22,7 +27,7 @@ class DetailViewControllerTests : XCTestCase {
     }
     
     func test_HasMap_View() {
-        let sut = DetailViewController()
+         sut = DetailViewController()
         sut.loadViewIfNeeded()
         let mapView = sut.mapView.isDescendant(of: sut.view) 
         
@@ -30,7 +35,7 @@ class DetailViewControllerTests : XCTestCase {
     }
     
     func test_SettingItemInfo_SetsTextToLabel() {
-        let sut = DetailViewController()
+         sut = DetailViewController()
         let coordinate = CLLocationCoordinate2DMake(37.3345, -122.0091)
         let location = Location(name: "Foo", coordinate: coordinate)
         
@@ -51,7 +56,7 @@ class DetailViewControllerTests : XCTestCase {
     }
     
     func test_CheckItem_ChecksItemInItemManager() {
-        let sut = DetailViewController()
+         sut = DetailViewController()
 
         let itemManager = ItemManager()
         itemManager.add(ToDoItem(title: "Foo"))
@@ -62,5 +67,10 @@ class DetailViewControllerTests : XCTestCase {
         XCTAssertEqual(itemManager.toDoCount, 0)
         XCTAssertEqual(itemManager.doneCount, 1)
         
+    }
+    
+    override func tearDown() {
+        sut.itemInfo?.0.removeAll()
+        super.tearDown()
     }
 }

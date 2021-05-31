@@ -14,7 +14,7 @@ class ItemCell: UITableViewCell {
     let titleLabel:UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 12)
-        label.text = ""
+        //label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -23,7 +23,7 @@ class ItemCell: UITableViewCell {
     let locationLabel:UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 10)
-        label.text = ""
+        //label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -32,7 +32,7 @@ class ItemCell: UITableViewCell {
     let dateLabel:UILabel = {
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 8)
-        label.text = ""
+        //label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -52,18 +52,18 @@ class ItemCell: UITableViewCell {
         contentView.addSubview(locationLabel)
         contentView.addSubview(dateLabel)
 
-        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
         titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         
-        locationLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 5).isActive = true
+        locationLabel.topAnchor.constraint(equalTo: titleLabel.topAnchor, constant: 10).isActive = true
         locationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         locationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
         
-        dateLabel.topAnchor.constraint(equalTo: locationLabel.topAnchor, constant: 5).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: locationLabel.topAnchor, constant: 10).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
         dateLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12).isActive = true
@@ -98,4 +98,5 @@ class ItemCell: UITableViewCell {
        
     }
 
+    
 }

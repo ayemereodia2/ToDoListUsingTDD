@@ -14,27 +14,33 @@ class ToDoInputViewController : UIViewController {
     var itemManager:ItemManager?
     
     
-    let titleTextField:UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 25,weight: .medium)
-        label.text = "Title Label"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
+    var titleTextField:UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.font = UIFont.systemFont(ofSize: 12,weight: .medium)
+        textField.placeholder = "title"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.rightViewMode = .always
+        return textField
     }()
     
-    let saveButton:UIButton = {
+    var saveButton:UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         button.setTitle("Save", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .green
         button.layer.cornerRadius = 6
+        
         return button
     }()
     
-    let cancelButton:UIButton = {
+    var cancelButton:UIButton = {
         
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -53,20 +59,34 @@ class ToDoInputViewController : UIViewController {
         return view
     }()
     
-    let addressTexfield:UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.text = "address"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    var addressTexfield:UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.font = UIFont.systemFont(ofSize: 12)
+        textField.placeholder = "address"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.leftViewMode = .always
+        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.rightViewMode = .always
+        return textField
     }()
     
-    let dateTextField:UILabel = {
-        let label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.text = "date"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    var dateTextField:UITextField = {
+        let textField = UITextField(frame: .zero)
+        textField.font = UIFont.systemFont(ofSize: 12)
+        textField.placeholder = "date"
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.black.cgColor
+        textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.leftViewMode = .always
+
+        // Create a padding view for padding on right
+        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 6, height: textField.frame.height))
+        textField.rightViewMode = .always
+        return textField
     }()
     
     override func loadView() {
@@ -130,7 +150,7 @@ class ToDoInputViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
-        saveButton.sendActions(for: .touchUpInside)
+        //saveButton.sendActions(for: .touchUpInside)
     }
     
     @objc func saveButtonTapped(sender: UIButton!) {
@@ -160,14 +180,19 @@ class ToDoInputViewController : UIViewController {
         }
         
         if let addressString = addressTexfield.text, addressString.count > 0 {
-            geoCoder.geocodeAddressString(addressString){[unowned self] (placeMarks, error) -> Void in 
-                let placeMark = placeMarks?.first
-                
-                let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location: Location(name: addressString, coordinate: placeMark?.location?.coordinate))
-                
-                self.itemManager?.add(item)
-                
-            }
+//            geoCoder.geocodeAddressString(addressString){[weak self] (placeMarks, error) -> Void in 
+//                let placeMark = placeMarks?.first
+//                
+//
+//
+//            }
+            let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location: Location(name: addressString, coordinate: nil))
+            
+            self.itemManager?.add(item)
+            
+            
+            
         }
+        self.dismiss(animated: true, completion: nil) 
     }
 }

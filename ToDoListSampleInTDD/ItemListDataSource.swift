@@ -7,7 +7,7 @@
 
 import UIKit
 
- class ItemListDataSource :NSObject, UITableViewDataSource,UITableViewDelegate {
+ class ItemListDataSource : NSObject, UITableViewDataSource,UITableViewDelegate,ItemManagerSettable {
     
     var itemManager:ItemManager?
     
@@ -51,6 +51,20 @@ import UIKit
         return cell
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var rowHeight = 0.0
+        guard let section = Section(rawValue: indexPath.section) else {
+            fatalError()
+        }        
+        switch section {
+        case .toDo:
+            rowHeight = 60.0
+        case .done:
+            rowHeight = 60.0
+        }
+        return CGFloat(rowHeight)
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
@@ -91,6 +105,18 @@ import UIKit
         tableView.reloadData()
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let section = Section(rawValue: indexPath.section) else {
+            fatalError()
+        }
+        
+        switch section {
+        case .toDo:
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ItemSelectedNotification"), object: self,userInfo: ["index":indexPath.row])
+        default:
+            break
+        }
+    }
     
     
 }

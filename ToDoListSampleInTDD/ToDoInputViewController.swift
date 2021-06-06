@@ -44,7 +44,7 @@ class ToDoInputViewController : UIViewController {
         
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        //button.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         button.setTitle("Cancel", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.backgroundColor = .blue
@@ -99,6 +99,8 @@ class ToDoInputViewController : UIViewController {
         mainView.addSubview(saveButton)
         mainView.addSubview(cancelButton)
       saveButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+    
+        cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
         setConstraintsForViews()
 
 
@@ -158,7 +160,11 @@ class ToDoInputViewController : UIViewController {
     }
     
     @objc func cancelButtonTapped() {
-        
+        cancel()
+    }
+    
+    func cancel(){
+        dismiss(animated: true, completion: nil)
     }
     
     lazy var dateFormatter:DateFormatter = {
@@ -180,19 +186,25 @@ class ToDoInputViewController : UIViewController {
         }
         
         if let addressString = addressTexfield.text, addressString.count > 0 {
-//            geoCoder.geocodeAddressString(addressString){[weak self] (placeMarks, error) -> Void in 
-//                let placeMark = placeMarks?.first
-//                
-//
-//
-//            }
-            let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location: Location(name: addressString, coordinate: nil))
+            geoCoder.geocodeAddressString(addressString){[weak self] (placeMarks, error) -> Void in 
+                let placeMark = placeMarks?.first
+                
+                let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location: Location(name: addressString, coordinate: placeMark?.location?.coordinate))
+                
+                DispatchQueue.main.async {
+                    self?.itemManager?.add(item)
+                    self?.dismiss(animated: true, completion: nil) 
+                }
+
+            }
             
+        }else{
+            let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location:Location(name: addressTexfield.text!, coordinate: nil))
             self.itemManager?.add(item)
-            
-            
-            
+            self.dismiss(animated: true, completion: nil) 
         }
+        let item = ToDoItem(title: titleString, itemDescription: "description", timestamp: date?.timeIntervalSince1970, location:Location(name: addressTexfield.text!, coordinate:nil))
+        self.itemManager?.add(item)
         self.dismiss(animated: true, completion: nil) 
     }
 }

@@ -14,13 +14,15 @@ class ItemListViewControllerTest: XCTestCase {
     
     override func setUp() {
         mock =  MockDataSource()
+        mock.itemManager = ItemManager()
+        
         sut = ItemListViewController(dataProvider: mock)
     }
 
     func test_TableViewIsNotNilAfterViewDid() {
         
          sut = ItemListViewController()
-        
+        sut.dataProvider = MockDataSource()
         sut.loadViewIfNeeded()
         
         XCTAssertNotNil(sut.tableView)
@@ -47,6 +49,7 @@ class ItemListViewControllerTest: XCTestCase {
     
     func test_AddItem_Presents_AddItemViewController() {
         sut = ItemListViewController()
+        sut.dataProvider = MockDataSource()
         let window = UIWindow(frame: UIScreen.main.bounds)
           window.makeKeyAndVisible()
           window.rootViewController = sut
@@ -71,6 +74,7 @@ class ItemListViewControllerTest: XCTestCase {
     
     func test_AddItem_PresentsAddItemViewController(){
         sut = ItemListViewController()
+        sut.dataProvider = MockDataSource()
         let window = UIWindow(frame: UIScreen.main.bounds)
           window.makeKeyAndVisible()
           window.rootViewController = sut
@@ -95,6 +99,7 @@ class ItemListViewControllerTest: XCTestCase {
     
     func test_ItemVC_SharesSameItemManager_WithToDoInputVC(){
         sut = ItemListViewController()
+        sut.dataProvider = MockDataSource()
         let window = UIWindow(frame: UIScreen.main.bounds)
           window.makeKeyAndVisible()
           window.rootViewController = sut

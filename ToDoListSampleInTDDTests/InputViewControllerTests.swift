@@ -51,26 +51,37 @@ class InputViewControllerTests : XCTestCase {
     }
     
     func test_Save_Uses_GeoCoderToGetCoordinateFromAddress() {
+        let mockSut = MockToDoInputVC()
+        
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM/dd/yyyy"
         
         let timestamp = 1456095600.0
         let date = Date(timeIntervalSince1970: timestamp)
-        sut.dateTextField.text = dateFormatter.string(from: date)
-        sut.titleTextField.text = "Foo"
-        sut.addressTexfield.text = "Infinite Loop 1, Cupertino"
+        mockSut.dateTextField.text = dateFormatter.string(from: date)
+        mockSut.titleTextField.text = "Foo"
+        mockSut.addressTexfield.text = "Infinite Loop 1, Cupertino"
         let mockGeoCoder = MockGeoCoder()
-        sut.geoCoder = mockGeoCoder
-        sut.itemManager = ItemManager()
+        mockSut.geoCoder = mockGeoCoder
+        mockSut.itemManager = ItemManager()
         
-        sut.save()
+        let dismissExpectation = expectation(description: "Dismiss")
         
+        mockSut.completionHandler = {
+            dismissExpectation.fulfill()
+        }
+        mockSut.save()
+        //placeMark = MockPlaceMark()
         let coordinate = CLLocationCoordinate2DMake(37.3316851, -122.0300674)
         placeMark.mockCoordinate = coordinate
         mockGeoCoder.completionHandler?([placeMark], nil)
-        let item = sut.itemManager?.item(at: 0)
+        
+        waitForExpectations(timeout: 1, handler: nil)
+        
+        let item = mockSut.itemManager?.item(at: 0)
         let testItem = ToDoItem(title: "Foo", itemDescription: "description", timestamp: timestamp, location: Location(name: "Infinite Loop 1, Cupertino", coordinate: coordinate))
         XCTAssertEqual(item, testItem)
+        mockSut.itemManager?.removeAll()
         
     }
     
@@ -87,6 +98,21 @@ class InputViewControllerTests : XCTestCase {
             return
         }
         XCTAssertTrue(action1.contains("saveButtonTappedWithSender:"))
+    }
+    
+    func test_CancelButton_HasCancelOption(){
+        let cancelButton = sut.cancelButton
+        sut.loadViewIfNeeded()
+        
+        XCTAssertNotNil(cancelButton, "Button is not nil")
+        
+        guard let action1 = cancelButton.actions(forTarget: sut, forControlEvent: .touchUpInside) else {
+            XCTFail()
+            return
+        }
+        print("value",action1[0])
+        XCTAssertEqual("cancelButtonTapped", action1[0])
+
     }
     
     func test_GeoCoder_Fetches_Coordinates(){
@@ -129,6 +155,12 @@ class InputViewControllerTests : XCTestCase {
         XCTAssertTrue(mockVC.dismissGotCalled)
     }
     
+    func test_Cancel_PopsViewController(){
+        let mockVC = MockToDoInputVC()
+        mockVC.cancel()
+        XCTAssertTrue(mockVC.dismissGotCalled)
+    }
+    
     override func tearDown() {
         sut.itemManager?.removeAll()
         super.tearDown()
@@ -158,10 +190,13 @@ extension InputViewControllerTests {
     
     class MockToDoInputVC : ToDoInputViewController {
         var dismissGotCalled:Bool = false
+        var completionHandler:(()->Void)?
         
         override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
             dismissGotCalled = true
+            completionHandler?()
         }
+        
         
     }
     
